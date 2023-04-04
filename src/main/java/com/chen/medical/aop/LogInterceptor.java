@@ -1,7 +1,5 @@
-package com.yupi.springbootinit.aop;
+package com.chen.medical.aop;
 
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,11 +11,14 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
+
 /**
  * 请求响应日志 AOP
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @create 2023/4/4 22:23
  **/
 @Aspect
 @Component
@@ -27,7 +28,7 @@ public class LogInterceptor {
     /**
      * 执行拦截
      */
-    @Around("execution(* com.yupi.springbootinit.controller.*.*(..))")
+    @Around("execution(* com.chen.medical.controller.*.*(..))")
     public Object doInterceptor(ProceedingJoinPoint point) throws Throwable {
         // 计时
         StopWatch stopWatch = new StopWatch();

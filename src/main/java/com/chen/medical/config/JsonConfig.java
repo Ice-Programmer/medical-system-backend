@@ -1,4 +1,4 @@
-package com.yupi.springbootinit.config;
+package com.chen.medical.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -10,8 +10,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 /**
  * Spring MVC Json 配置
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @create 2023/4/4 22:23
  */
 @JsonComponent
 public class JsonConfig {

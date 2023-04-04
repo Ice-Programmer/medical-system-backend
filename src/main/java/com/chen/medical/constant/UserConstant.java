@@ -1,10 +1,10 @@
-package com.yupi.springbootinit.constant;
+package com.chen.medical.constant;
 
 /**
  * 用户常量
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @create 2023/4/4 22:26
  */
 public interface UserConstant {
 

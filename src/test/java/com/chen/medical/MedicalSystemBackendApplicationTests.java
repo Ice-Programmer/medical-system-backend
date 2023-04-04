@@ -1,4 +1,4 @@
-package com.chen.medicalsystembackend;
+package com.chen.medical;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

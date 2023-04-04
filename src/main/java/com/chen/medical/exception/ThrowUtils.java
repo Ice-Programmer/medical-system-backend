@@ -1,12 +1,13 @@
-package com.yupi.springbootinit.exception;
+package com.chen.medical.exception;
 
-import com.yupi.springbootinit.common.ErrorCode;
+
+import com.chen.medical.common.ErrorCode;
 
 /**
  * 抛异常工具类
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @create 2023/4/4 22:23
  */
 public class ThrowUtils {
 

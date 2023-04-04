@@ -1,4 +1,4 @@
-package com.chen.medicalsystembackend.common;
+package com.chen.medical.common;
 
 import lombok.Data;
 

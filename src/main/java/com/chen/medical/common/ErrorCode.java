@@ -1,4 +1,4 @@
-package com.chen.medicalsystembackend.common;
+package com.chen.medical.common;
 
 /**
  * 自定义错误码
