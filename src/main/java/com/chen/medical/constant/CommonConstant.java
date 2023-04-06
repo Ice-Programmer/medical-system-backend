@@ -3,7 +3,7 @@ package com.chen.medical.constant;
 /**
  * 通用常量
  *
- * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @author <a href="https://github.com/IceProgramer">chenjiahan</a>
  * @create 2023/4/4 22:26
  */
 public interface CommonConstant {

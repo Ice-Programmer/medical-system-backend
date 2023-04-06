@@ -6,7 +6,7 @@ import com.chen.medical.common.ErrorCode;
 /**
  * 抛异常工具类
  *
- * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @author <a href="https://github.com/IceProgramer">chenjiahan</a>
  * @create 2023/4/4 22:23
  */
 public class ThrowUtils {

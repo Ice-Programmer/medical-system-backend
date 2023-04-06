@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 删除请求
  *
- * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @author <a href="https://github.com/IceProgramer">chenjiahan</a>
  * @create 2023/4/4 22:24
  */
 @Data

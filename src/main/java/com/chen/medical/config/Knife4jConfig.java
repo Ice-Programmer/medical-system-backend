@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Knife4j 接口文档配置
  *
- * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @author <a href="https://github.com/IceProgramer">chenjiahan</a>
  * @create 2023/4/4 22:23
  */
 @Configuration

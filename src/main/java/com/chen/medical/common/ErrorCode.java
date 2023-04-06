@@ -3,7 +3,7 @@ package com.chen.medical.common;
 /**
  * 自定义错误码
  *
- * @auther <a href="https://github.com/IceProgramer">chenjiahan</a>
+ * @author <a href="https://github.com/IceProgramer">chenjiahan</a>
  * @create 2023/4/4 22:23
  */
 public enum ErrorCode {
