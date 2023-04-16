@@ -20,7 +20,7 @@
 
     <sql id="Base_Column_List">
         id,userAccount,userPassword,
-        userName,userAvatar,userProfile,
+        userName,userAvatar,userProfile
         tags,userRole,createTime,
         updateTime,isDelete
     </sql>

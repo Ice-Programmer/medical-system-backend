@@ -25,6 +25,11 @@ public class EssayAddRequest implements Serializable {
     private String content;
 
     /**
+     * 正文
+     */
+    private String article;
+
+    /**
      * 标签列表（json 数组）
      */
     private String tags;

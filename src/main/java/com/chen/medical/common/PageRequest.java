@@ -2,6 +2,7 @@ package com.chen.medical.common;
 
 import com.chen.medical.constant.CommonConstant;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 分页请求

@@ -1,6 +1,8 @@
 -- 创建库
 create database if not exists medical;
 
+use medical;
+
 -- 文章表
 create table if not exists essay
 (
@@ -18,7 +20,8 @@ create table if not exists essay
 -- 用户表
 create table if not exists user
 (
-    id           bigint auto_increment comment 'id' primary key,
+    id           bigint auto_increment comment 'id'
+        primary key,
     userAccount  varchar(256)                           not null comment '账号',
     userPassword varchar(512)                           not null comment '密码',
     userName     varchar(256)                           null comment '用户昵称',
@@ -29,4 +32,29 @@ create table if not exists user
     createTime   datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     updateTime   datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     isDelete     tinyint      default 0                 not null comment '是否删除'
-) comment '用户' collate = utf8mb4_unicode_ci;
+)
+    comment '用户' collate = utf8mb4_unicode_ci;
+
+-- 帖子点赞表（硬删除）
+create table if not exists essay_thumb
+(
+    id         bigint auto_increment comment 'id' primary key,
+    essayId     bigint                             not null comment '文章 id',
+    userId     bigint                             not null comment '创建用户 id',
+    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    index idx_essayId (essayId),
+    index idx_userId (userId)
+) comment '文章点赞';
+
+-- 帖子收藏表（硬删除）
+create table if not exists essay_favour
+(
+    id         bigint auto_increment comment 'id' primary key,
+    essayId     bigint                             not null comment '文章 id',
+    userId     bigint                             not null comment '创建用户 id',
+    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    index idx_essayId (essayId),
+    index idx_userId (userId)
+) comment '文章收藏';

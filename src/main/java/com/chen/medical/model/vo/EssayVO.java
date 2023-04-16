@@ -30,6 +30,11 @@ public class EssayVO implements Serializable {
     private String content;
 
     /**
+     * 文章内容
+     */
+    private String article;
+
+    /**
      * 标签列表（json 数组）
      */
     private String tags;

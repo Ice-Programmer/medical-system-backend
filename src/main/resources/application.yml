@@ -18,9 +18,19 @@ spring:
     port: 6379
     host: localhost
     database: 1
-
+  # 文件上传
+  servlet:
+    multipart:
+      # 大小限制
+      max-file-size: 1GB
+      
 server:
   port: 8088
+  servlet:
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
 
 mybatis-plus:
   configuration:

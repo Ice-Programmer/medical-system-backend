@@ -3,6 +3,7 @@ package com.chen.medical.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.medical.common.DeleteRequest;
+import com.chen.medical.model.dto.essay.EssayEsDTO;
 import com.chen.medical.model.entity.Essay;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.medical.model.dto.essay.EssayAddRequest;
@@ -56,33 +57,5 @@ public interface EssayService extends IService<Essay> {
      * @param essayQueryRequest
      * @return
      */
-    Page<Essay> searchFromEs(EssayQueryRequest essayQueryRequest);
-
-    /**
-     * 获取文章封装
-     *
-     * @param essay
-     * @param request
-     * @return
-     */
-    EssayVO getEssayVO(Essay essay, HttpServletRequest request);
-
-    /**
-     * 分页获取文章封装
-     *
-     * @param essayPage
-     * @param request
-     * @return
-     */
-    Page<EssayVO> getEssayVOPage(Page<Essay> essayPage, HttpServletRequest request);
-
-    /**
-     * 分页查询文章
-     *
-     * @param essayQueryRequest
-     * @param request
-     * @return
-     */
-    Page<EssayVO> listEssayVOByPage(EssayQueryRequest essayQueryRequest, HttpServletRequest request);
-
+    Page<EssayEsDTO> searchFromEs(EssayQueryRequest essayQueryRequest);
 }

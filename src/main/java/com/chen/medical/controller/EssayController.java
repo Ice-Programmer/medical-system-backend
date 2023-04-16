@@ -1,5 +1,6 @@
 package com.chen.medical.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.medical.common.BaseResponse;
 import com.chen.medical.common.DeleteRequest;
 import com.chen.medical.common.ErrorCode;
@@ -7,12 +8,13 @@ import com.chen.medical.common.ResultUtils;
 import com.chen.medical.exception.BusinessException;
 import com.chen.medical.exception.ThrowUtils;
 import com.chen.medical.model.dto.essay.EssayAddRequest;
+import com.chen.medical.model.dto.essay.EssayEsDTO;
+import com.chen.medical.model.dto.essay.EssayQueryRequest;
+import com.chen.medical.model.entity.Essay;
 import com.chen.medical.service.EssayService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -32,6 +34,7 @@ public class EssayController {
 
     /**
      * 创建文章
+     *
      * @param essayAddRequest 增加文章请求
      * @return 文章id
      */
@@ -44,6 +47,7 @@ public class EssayController {
 
     /**
      * 删除文章信息
+     *
      * @param deleteRequest 删除id
      * @return 删除结果
      */
@@ -57,6 +61,17 @@ public class EssayController {
             throw new BusinessException(ErrorCode.OPERATION_ERROR, "删除文章失败");
         }
         return ResultUtils.success(true);
+    }
+
+    @PostMapping("/query")
+    public BaseResponse<Page<EssayEsDTO>> searchEssay(@RequestBody EssayQueryRequest essayQueryRequest) {
+        Page<EssayEsDTO> essayPage = essayService.searchFromEs(essayQueryRequest);
+        return ResultUtils.success(essayPage);
+    }
+
+    @PostMapping("/upload")
+    public void uploadFile(@RequestParam("file") MultipartFile file) {
+        log.info("{}", file);
     }
 
 }
