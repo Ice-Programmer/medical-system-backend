@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
 * @author chenjiahan
-* @description 针对表【essay_thumb(帖子点赞)】的数据库操作Service实现
+* @description 针对表【essay_thumb(文章点赞)】的数据库操作Service实现
 * @createDate 2023-04-16 10:31:33
 */
 @Service

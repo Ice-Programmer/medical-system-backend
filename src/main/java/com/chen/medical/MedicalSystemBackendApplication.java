@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @MapperScan("com.chen.medical.mapper")
 @EnableScheduling
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class MedicalSystemBackendApplication {
 
     public static void main(String[] args) {

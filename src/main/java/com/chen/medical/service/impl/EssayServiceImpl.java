@@ -8,14 +8,23 @@ import com.chen.medical.common.ErrorCode;
 import com.chen.medical.constant.CommonConstant;
 import com.chen.medical.exception.BusinessException;
 import com.chen.medical.exception.ThrowUtils;
+import com.chen.medical.mapper.EssayFavourMapper;
+import com.chen.medical.mapper.EssayThumbMapper;
 import com.chen.medical.model.dto.essay.EssayEsDTO;
 import com.chen.medical.model.entity.Essay;
 import com.chen.medical.model.dto.essay.EssayAddRequest;
 import com.chen.medical.model.dto.essay.EssayQueryRequest;
+import com.chen.medical.model.entity.EssayFavour;
+import com.chen.medical.model.entity.EssayThumb;
+import com.chen.medical.model.entity.User;
+import com.chen.medical.model.vo.EssayVO;
+import com.chen.medical.service.UserService;
+import com.chen.medical.utils.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import com.chen.medical.service.EssayService;
 import com.chen.medical.mapper.EssayMapper;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -33,9 +42,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +58,15 @@ public class EssayServiceImpl extends ServiceImpl<EssayMapper, Essay>
 
     @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private EssayFavourMapper essayFavourMapper;
+
+    @Resource
+    private EssayThumbMapper essayThumbMapper;
 
     @Override
     public Long addEssay(EssayAddRequest essayAddRequest) {
@@ -103,8 +120,86 @@ public class EssayServiceImpl extends ServiceImpl<EssayMapper, Essay>
     }
 
     @Override
-    public QueryWrapper<Essay> getQueryWrapper(EssayQueryRequest postQueryRequest) {
-        return null;
+    public Page<EssayVO> getEssayVOPage(Page<Essay> essayPage, HttpServletRequest request) {
+        List<Essay> essayList = essayPage.getRecords();
+        Page<EssayVO> essayVOPage = new Page<>(essayPage.getCurrent(), essayPage.getSize(), essayPage.getTotal());
+        if (CollectionUtils.isEmpty(essayList)) {
+            return essayVOPage;
+        }
+        // 1. 关联查询用户信息
+        Set<Long> userIdSet = essayList.stream().map(Essay::getUserId).collect(Collectors.toSet());
+        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
+                .collect(Collectors.groupingBy(User::getId));
+        // 2. 已登录，获取用户点赞、收藏状态
+        Map<Long, Boolean> essayIdHasThumbMap = new HashMap<>();
+        Map<Long, Boolean> essayIdHasFavourMap = new HashMap<>();
+        User loginUser = userService.getLoginUserPermitNull(request);
+        if (loginUser != null) {
+            Set<Long> essayIdSet = essayList.stream().map(Essay::getId).collect(Collectors.toSet());
+            loginUser = userService.getLoginUser(request);
+            // 获取点赞
+            QueryWrapper<EssayThumb> essayThumbQueryWrapper = new QueryWrapper<>();
+            essayThumbQueryWrapper.in("essayId", essayIdSet);
+            essayThumbQueryWrapper.eq("userId", loginUser.getId());
+            List<EssayThumb> essayEssayThumbList = essayThumbMapper.selectList(essayThumbQueryWrapper);
+            essayEssayThumbList.forEach(essayEssayThumb -> essayIdHasThumbMap.put(essayEssayThumb.getEssayId(), true));
+            // 获取收藏
+            QueryWrapper<EssayFavour> essayFavourQueryWrapper = new QueryWrapper<>();
+            essayFavourQueryWrapper.in("essayId", essayIdSet);
+            essayFavourQueryWrapper.eq("userId", loginUser.getId());
+            List<EssayFavour> essayFavourList = essayFavourMapper.selectList(essayFavourQueryWrapper);
+            essayFavourList.forEach(essayFavour -> essayIdHasFavourMap.put(essayFavour.getEssayId(), true));
+        }
+        // 填充信息
+        List<EssayVO> essayVOList = essayList.stream().map(essay -> {
+            EssayVO essayVO = EssayVO.objToVo(essay);
+            Long userId = essay.getUserId();
+            User user = null;
+            if (userIdUserListMap.containsKey(userId)) {
+                user = userIdUserListMap.get(userId).get(0);
+            }
+            essayVO.setUser(userService.getUserVO(user));
+            essayVO.setHasThumb(essayIdHasThumbMap.getOrDefault(essay.getId(), false));
+            essayVO.setHasFavour(essayIdHasFavourMap.getOrDefault(essay.getId(), false));
+            return essayVO;
+        }).collect(Collectors.toList());
+        essayVOPage.setRecords(essayVOList);
+        return essayVOPage;
+    }
+
+    @Override
+    public QueryWrapper<Essay> getQueryWrapper(EssayQueryRequest essayQueryRequest) {
+        QueryWrapper<Essay> queryWrapper = new QueryWrapper<>();
+        if (essayQueryRequest == null) {
+            return queryWrapper;
+        }
+        String searchText = essayQueryRequest.getSearchText();
+        String sortField = essayQueryRequest.getSortField();
+        String sortOrder = essayQueryRequest.getSortOrder();
+        Long id = essayQueryRequest.getId();
+        String title = essayQueryRequest.getTitle();
+        String content = essayQueryRequest.getContent();
+        List<String> tagList = essayQueryRequest.getTags();
+        Long userId = essayQueryRequest.getUserId();
+        Long notId = essayQueryRequest.getNotId();
+        // 拼接查询条件
+        if (StringUtils.isNotBlank(searchText)) {
+            queryWrapper.like("title", searchText).or().like("content", searchText);
+        }
+        queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
+        queryWrapper.like(StringUtils.isNotBlank(content), "content", content);
+        if (CollectionUtils.isNotEmpty(tagList)) {
+            for (String tag : tagList) {
+                queryWrapper.like("tags", "\"" + tag + "\"");
+            }
+        }
+        queryWrapper.ne(ObjectUtils.isNotEmpty(notId), "id", notId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
+        queryWrapper.eq("isDelete", false);
+        queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
+                sortField);
+        return queryWrapper;
     }
 
     @Override

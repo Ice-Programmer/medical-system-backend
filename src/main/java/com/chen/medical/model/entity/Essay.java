@@ -47,6 +47,21 @@ public class Essay implements Serializable {
     private String path;
 
     /**
+     * 创建用户Id
+     */
+    private Long userId;
+
+    /**
+     * 收藏数
+     */
+    private Integer favourNum;
+
+    /**
+     * 点赞数
+     */
+    private Integer thumbNum;
+
+    /**
      * 创建时间
      */
     private Date createTime;

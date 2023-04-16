@@ -35,7 +35,7 @@ create table if not exists user
 )
     comment '用户' collate = utf8mb4_unicode_ci;
 
--- 帖子点赞表（硬删除）
+-- 文章点赞表（硬删除）
 create table if not exists essay_thumb
 (
     id         bigint auto_increment comment 'id' primary key,
@@ -47,7 +47,7 @@ create table if not exists essay_thumb
     index idx_userId (userId)
 ) comment '文章点赞';
 
--- 帖子收藏表（硬删除）
+-- 文章收藏表（硬删除）
 create table if not exists essay_favour
 (
     id         bigint auto_increment comment 'id' primary key,

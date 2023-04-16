@@ -49,6 +49,12 @@ public class EssayQueryRequest extends PageRequest implements Serializable {
      */
     private List<String> orTags;
 
+    /**
+     * 创建用户id
+     */
+    private Long userId;
+
+    private Long notId;
 
     private static final long serialVersionUID = 1L;
 }

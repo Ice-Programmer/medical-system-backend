@@ -16,4 +16,12 @@
         id,essayId,userId,
         createTime,updateTime
     </sql>
+
+    <select id="listFavourEssayByPage"
+            resultType="com.chen.medical.model.entity.Essay">
+        select p.*
+        from essay p
+                 join (select essayId from essay_favour where userId = #{favourUserId}) pf
+                      on p.id = pf.essayId ${ew.customSqlSegment}
+    </select>
 </mapper>

@@ -51,6 +51,16 @@ public interface EssayService extends IService<Essay> {
      */
     QueryWrapper<Essay> getQueryWrapper(EssayQueryRequest essayQueryRequest);
 
+
+    /**
+     * 分页获取帖子封装
+     *
+     * @param essayPage
+     * @param request
+     * @return
+     */
+    Page<EssayVO> getEssayVOPage(Page<Essay> essayPage, HttpServletRequest request);
+
     /**
      * 从 ES 查询
      *

@@ -9,7 +9,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 帖子收藏
+ * 文章收藏
  * @TableName essay_favour
  */
 @TableName(value ="essay_favour")

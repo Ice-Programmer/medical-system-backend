@@ -11,6 +11,9 @@
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="tags" column="tags" jdbcType="VARCHAR"/>
         <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="favourNum" column="favourNum" jdbcType="INTEGER"/>
+        <result property="thumbNum" column="thumbNum" jdbcType="INTEGER"/>
         <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
         <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
@@ -19,7 +22,8 @@
     <sql id="Base_Column_List">
         id
         ,title,author,
-        content,tags,path,createTime
+        content,tags,path,userId,favourNum,thumbNum
+        createTime
         updateTime,isDelete
     </sql>
 </mapper>
